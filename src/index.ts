@@ -16,7 +16,7 @@ export interface Env {
  * The name of the counter to use.
  * Feel free to change this to a unique name for your own counter.
  */
-const CounterName = 'Counter1';
+const CounterName = 'Counter-SoundButtons';
 
 export default {
   /**
