@@ -4,9 +4,11 @@
 
 Count how many visitors any page gets. A simple solution to add a view counter badge to your readme files or web page.
 
+A view counter implemented using Cloudflare Workers Edge storage solution.
+
 > [!Note]
 > I have rewritten this worker from KV storage to D1 storage.  
-> The main reason is that the free plan **_limits KV to 1,000 write, delete, list operations per day_**, but **_allows D1 for 100,000 rows written per day_**, and the KV limit is lower than the daily views of my site.
+> The main reason is that the free plan **_limits KV to 1,000 write, delete, list operations per day_**, but **_allows D1 for 100,000 rows written per day_**.
 >
 > **The following are the differences from upstream**
 >
@@ -15,22 +17,31 @@ Count how many visitors any page gets. A simple solution to add a view counter b
 > - Migrate from Service Workers to ES Modules (D1 can only works with ES Modules).
 > - Update CI workflow.
 
-## Usage
+> [!Important]
+> It is important to note that _D1 is currently in public beta_.  
+> It is not advisable to utilize beta products for large production workloads.  
+> If you find yourself in this scenario, please choose to use the upstream KV solution.  
+> Also, please star🌟 and watch👀 this repo to stay updated with our future modifications.
 
-The view counter badge is meant to be deployed individually for each profile/user. Click the button and then follow the steps below to deploy your own view counter in no time!
+## Setup
+
+The view counter badge is meant to be deployed individually for each profile/user. Click the button and then follow the steps below to deploy your own view counter. During the process, it will guide you to log in (or register) your GitHub and Cloudflare accounts.
 
 [![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/jim60105/worker-view-counter-badge)
 
-### Set your app name
+After completing the process, please return to GitHub. At this point, the Action will fail to deploy, so it is essential to proceed with the following configuration.
 
-In `wrangler.toml` and change the `name` property - this will be the subdomain that your app is published on.
+### Set your worker name
 
-Your Cloudflare workers domain will be of the format `{your-worker-domain}.workers.dev`. When you publish an app on a Worker,
-it will be published on a subdomain corresponding to your app name - `{worker-name}.{your-worker-domain}.workers.dev` by default.
+You can change the name in the first line of `wrangler.toml`, as it will serve as the worker name and is related to the subdomain.
 
-### Create D1 Database
+Your Cloudflare Worker will be deployed at `{worker-name}.{cloudflare-id}.workers.dev`.
 
-Create a new D1 Database, it's important that you name it `ViewCounter`. Then edit your `wrangler.toml` and change the `database_id` property with the id. Following these steps:
+### Prepare your new D1 Database
+
+Create a new D1 Database, it's important that you name it `ViewCounter`.
+
+After obtaining the `database_id` from the execution result of the command, please insert it back into the `wrangler.toml` file and save the file. Following these steps:
 
 #### Step 1: Create a new D1 Database
 
@@ -78,44 +89,20 @@ Create a table named `ViewCounter` with `init_database.sql`
 wrangler d1 execute ViewCounter --file=./init_database.sql
 ```
 
-### Get your Account ID and create a new API Token
+## Deploy
 
-To get your account ID:
-
-- Go to <https://dash.cloudflare.com> > Workers
-- Copy your account ID
-
-To create a new API Token:
-
-- Go to <https://dash.cloudflare.com/profile/api-tokens> > Create Token
-- Give your token a name (i.e. Github Actions)
-- Choose start with template
-- Select the "Edit Cloudflare Workers" template
-- Account Resources > Include > {your account}
-- Zone Resources > Include > All zones from account > {your account}
-
-Once done, navigate to your GitHub repository > Settings > Secrets and add the following secrets:
-
-```text
-- Name: CF_API_TOKEN
-- Value: your-api-token
-
-- Name: CF_ACCOUNT_ID
-- Value: your-account-id
-```
-
-Now if you push a new commit into `master` and you'll find your view counter deployed at `{worker-name}.{your-worker-domain}.workers.dev`
+Save the file and push a new commit into `master` and wait for the GitHub Action to deploy your worker.
 
 ## Add counter to README
 
 ```html
-<img src="https://<Your-cloudflare-deployment>.workers.dev" alt="View counter badge" />
+<img src="{worker-name}.{cloudflare-id}.workers.dev" alt="View counter badge" />
 ```
 
 OR
 
 ```markdown
-![View counter badge](https://<Your-cloudflare-deployment>.workers.dev)
+![View counter badge]({worker-name}.{cloudflare-id}.workers.dev)
 ```
 
 ## Customization
@@ -139,17 +126,17 @@ blue, cyan, green, yellow, orange, red, pink, purple, grey, black
 Example of a counter with parameters:
 
 ```text
-https://<Your cloudflare deployment>.workers.dev?style=classic&labelColor=black&color=green
+https://{worker-name}.{cloudflare-id}.workers.dev?style=classic&labelColor=black&color=green
 ```
 
 ## Multiple Deployments
 
 You can deploy multiple view counters under the same GitHub account and Cloudflare account.
 
-1. Create a new git branch.
+1. Create and checkout to a new git branch.
 2. Change the `name` in `wrangler.toml` to deploy on a different subdomain.
-3. Change the `CounterName` in `src/index.ts` to any other name you like.
-4. Then trigger the GitHub workflow again.
+3. Change the `CounterName` in `src/index.ts` to any other name you like. Please ensure that there are no conflicts with any existing names.
+4. Commit and push to origin to trigger the GitHub workflow again.
 
 ## License
 
