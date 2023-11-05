@@ -96,13 +96,13 @@ Save the file and push a new commit into `master` and wait for the GitHub Action
 ## Add counter to README
 
 ```html
-<img src="{worker-name}.{cloudflare-id}.workers.dev" alt="View counter badge" />
+<img src="https://{worker-name}.{cloudflare-id}.workers.dev" alt="View counter badge" />
 ```
 
 OR
 
 ```markdown
-![View counter badge]({worker-name}.{cloudflare-id}.workers.dev)
+![View counter badge](https://{worker-name}.{cloudflare-id}.workers.dev)
 ```
 
 ## Customization
