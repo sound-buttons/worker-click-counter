@@ -72,25 +72,25 @@ const getCountFromD1 = async (env: Env): Promise<number | null> =>
 const stepCount = async (count: number | null, env: Env): Promise<number> => {
   // If the value is null, insert a new record
   if (!count) {
-    count = 1;
-
     var result = await env.ViewCounter.prepare(
-      'INSERT INTO ViewCounter (Name, Value) VALUES (?1, ?2)'
+      'INSERT INTO ViewCounter (Name, Value) VALUES (?1, 1)'
     )
-      .bind(CounterName, count)
+      .bind(CounterName)
       .run();
+
     console.log('Insert result', result);
   } else {
-    // Value++
-    count++;
-
-    // Update the value to D1
-    var result = await env.ViewCounter.prepare('UPDATE ViewCounter SET Value = ?1 WHERE Name = ?2')
-      .bind(count, CounterName)
+    // Step the count in the database
+    var result = await env.ViewCounter.prepare(
+      'UPDATE ViewCounter SET Value = (SELECT Value FROM ViewCounter WHERE Name = ?1) + 1 WHERE Name = ?1'
+    )
+      .bind(CounterName)
       .run();
+
     console.log('Update result', result);
   }
-  return count;
+
+  return (count || 0) + 1;
 };
 
 /**
