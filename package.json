@@ -18,8 +18,5 @@
     "prettier": "^1.18.2",
     "typescript": "^5.2.2",
     "wrangler": "^3.13.1"
-  },
-  "dependencies": {
-    "badgen": "^3.2.2"
   }
 }

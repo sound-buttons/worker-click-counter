@@ -1,4 +1,3 @@
-import { StyleOption, badgen } from 'badgen';
 import {
   Request as WorkerRequest,
   D1Database,
@@ -31,22 +30,11 @@ export default {
     count = await stepCount(count, env);
     console.log('Count', count);
 
-    // Get the query parameters
-    const params = readQueryParams(request);
-    console.log('Params', params);
-
-    // Generate the svg string
-    const svgString = badgen({
-      ...params,
-      status: count.toString()
-    });
-    console.log('SVG', svgString);
-
-    return new Response(svgString, {
+    return new Response('' + count, {
       headers: {
-        'content-type': 'image/svg+xml;charset=utf-8',
-        'access-control-allow-origin': '*',
-        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0'
+        'content-type': 'text/plain;charset=UTF-8',
+        'cache-control': 'no-cache, no-store, must-revalidate, max-age=0',
+        'access-control-allow-origin': '*'
       }
     });
   }
@@ -90,28 +78,4 @@ const stepCount = async (count: number | null, env: Env): Promise<number> => {
   }
 
   return (count || 0) + 1;
-};
-
-/**
- * Reads the query parameters from the request.
- * @param request The incoming request.
- * @returns The query parameters.
- */
-const readQueryParams: (
-  request: WorkerRequest
-) => {
-  label: string;
-  labelColor: string;
-  color: string;
-  style: StyleOption;
-  scale: number;
-} = request => {
-  const { searchParams } = new URL(request.url);
-  return {
-    label: searchParams.get('label') || 'Views',
-    labelColor: searchParams.get('labelColor') || '555',
-    color: searchParams.get('color') || 'blue',
-    style: searchParams.get('style') === 'classic' ? 'classic' : 'flat',
-    scale: parseFloat(searchParams.get('scale') || '1')
-  };
 };
