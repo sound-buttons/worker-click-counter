@@ -25,16 +25,18 @@ export default {
    * @returns A response containing the SVG badge.
    */
   async fetch(request: WorkerRequest, env: Env): Promise<Response> {
-    // Step the count
-    let count: number | null = await getCountFromD1(env);
-    count = await stepCount(count, env);
+    let count: number = (await getCountFromD1(env)) || 0;
+    // Step the count if POST
+    if (request.method === 'POST') count = await stepCount(count, env);
     console.log('Count', count);
 
     return new Response('' + count, {
       headers: {
         'content-type': 'text/plain;charset=UTF-8',
         'cache-control': 'no-cache, no-store, must-revalidate, max-age=0',
-        'access-control-allow-origin': '*'
+        'access-control-allow-origin': '*',
+        'access-control-allow-methods': 'GET, POST',
+        'access-control-allow-headers': 'Content-Type'
       }
     });
   }
@@ -56,7 +58,7 @@ const getCountFromD1 = async (env: Env): Promise<number | null> =>
  * @param env The environment variables.
  * @returns The new count.
  */
-const stepCount = async (count: number | null, env: Env): Promise<number> => {
+const stepCount = async (count: number, env: Env): Promise<number> => {
   // If the value is null, insert a new record
   if (!count) {
     const result = await env.ViewCounter.prepare(
@@ -77,5 +79,5 @@ const stepCount = async (count: number | null, env: Env): Promise<number> => {
     console.log('Update result', result);
   }
 
-  return (count || 0) + 1;
+  return count + 1;
 };
