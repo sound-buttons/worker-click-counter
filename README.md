@@ -1,16 +1,18 @@
-# View Counter Badge
+# Click Counter
 
-![View counter badge](https://view-counter.jim60105.workers.dev)
+<https://view-counter-sb.jim60105.workers.dev>
 
-Count how many visitors any page gets. A simple solution to add a view counter badge to your readme files or web page.
+This tool is used to calculate the total number of button triggers.
 
-A view counter implemented using Cloudflare Workers Edge storage solution.
+A counter implemented using Cloudflare Workers Edge storage solution.
 
-> [!Note]
-> I have rewritten this worker from KV storage to D1 storage.  
-> The main reason is that the free plan **_limits KV to 1,000 write, delete, list operations per day_**, but **_allows D1 for 100,000 rows written per day_**.
+> [!Note]  
+> **The following are the differences from upstream (陳鈞 jim60105)**
 >
-> **The following are the differences from upstream**
+> - Response text number instead of badge with the GET request.
+> - Only step the count with the POST request.
+>
+> **The following are the differences from upstream (Aveek Saha)**
 >
 > - Change from KV storage to D1 database.
 > - Migrate project from JavaScript to TypeScript.
@@ -92,51 +94,6 @@ wrangler d1 execute ViewCounter --file=./init_database.sql
 ## Deploy
 
 Save the file and push a new commit into `master` and wait for the GitHub Action to deploy your worker.
-
-## Add counter to README
-
-```html
-<img src="https://{worker-name}.{cloudflare-id}.workers.dev" alt="View counter badge" />
-```
-
-OR
-
-```markdown
-![View counter badge](https://{worker-name}.{cloudflare-id}.workers.dev)
-```
-
-## Customization
-
-You can pass arguments to customize your view counter. The badge is created using `badgen` so all the options supported by `badgen` except for icon and iconWidth can be used.
-
-|  Parameter   | Default |         Allowed values          |      Example       |
-| :----------: | :-----: | :-----------------------------: | :----------------: |
-|   `label`    |  Views  |           Any string            |  `label=Visitors`  |
-| `labelColor` |   555   | RGB values or valid color names | `labelColor=black` |
-|   `color`    |  blue   | RGB values or valid color names |   `color=green`    |
-|   `style`    |  flat   |       `flat` or `classic`       |  `style=classic`   |
-|   `scale`    |    1    |           Any integer           |     `scale=2`      |
-
-Valid color names are:
-
-```text
-blue, cyan, green, yellow, orange, red, pink, purple, grey, black
-```
-
-Example of a counter with parameters:
-
-```text
-https://{worker-name}.{cloudflare-id}.workers.dev?style=classic&labelColor=black&color=green
-```
-
-## Multiple Deployments
-
-You can deploy multiple view counters under the same GitHub account and Cloudflare account.
-
-1. Create and checkout to a new git branch.
-2. Change the `name` in `wrangler.toml` to deploy on a different subdomain.
-3. Change the `CounterName` in `src/index.ts` to any other name you like. Please ensure that there are no conflicts with any existing names.
-4. Commit and push to origin to trigger the GitHub workflow again.
 
 ## License
 
