@@ -142,3 +142,5 @@ You can deploy multiple view counters under the same GitHub account and Cloudfla
 
 MIT License  
 Copyright (c) 2022 Aveek Saha and 陳鈞
+
+[![CodeFactor](https://www.codefactor.io/repository/github/jim60105/worker-view-counter-badge/badge)](https://www.codefactor.io/repository/github/jim60105/worker-view-counter-badge)

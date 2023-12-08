@@ -23,10 +23,9 @@ export default {
    * Fetches the view count and generates an SVG badge.
    * @param request The incoming request.
    * @param env The environment variables.
-   * @param ctx The execution context.
    * @returns A response containing the SVG badge.
    */
-  async fetch(request: WorkerRequest, env: Env, ctx: ExecutionContext): Promise<Response> {
+  async fetch(request: WorkerRequest, env: Env): Promise<Response> {
     // Step the count
     let count: number | null = await getCountFromD1(env);
     count = await stepCount(count, env);
@@ -72,7 +71,7 @@ const getCountFromD1 = async (env: Env): Promise<number | null> =>
 const stepCount = async (count: number | null, env: Env): Promise<number> => {
   // If the value is null, insert a new record
   if (!count) {
-    var result = await env.ViewCounter.prepare(
+    const result = await env.ViewCounter.prepare(
       'INSERT INTO ViewCounter (Name, Value) VALUES (?1, 1)'
     )
       .bind(CounterName)
@@ -81,7 +80,7 @@ const stepCount = async (count: number | null, env: Env): Promise<number> => {
     console.log('Insert result', result);
   } else {
     // Step the count in the database
-    var result = await env.ViewCounter.prepare(
+    const result = await env.ViewCounter.prepare(
       'UPDATE ViewCounter SET Value = (SELECT Value FROM ViewCounter WHERE Name = ?1) + 1 WHERE Name = ?1'
     )
       .bind(CounterName)
