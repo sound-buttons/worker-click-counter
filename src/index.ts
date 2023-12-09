@@ -1,8 +1,4 @@
-import {
-  Request as WorkerRequest,
-  D1Database,
-  ExecutionContext
-} from '@cloudflare/workers-types/experimental';
+import { Request as WorkerRequest, D1Database } from '@cloudflare/workers-types/experimental';
 
 /**
  * Environment variables type definition.
