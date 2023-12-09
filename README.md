@@ -108,4 +108,5 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
-[![CodeFactor](https://www.codefactor.io/repository/github/jim60105/worker-view-counter-badge/badge)](https://www.codefactor.io/repository/github/jim60105/worker-view-counter-badge)
+
+[![CodeFactor](https://www.codefactor.io/repository/github/sound-buttons/worker-click-counter/badge)](https://www.codefactor.io/repository/github/sound-buttons/worker-click-counter)
