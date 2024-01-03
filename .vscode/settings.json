@@ -1,16 +1,4 @@
 {
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": true
-    }
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": true
-    }
-  },
   "editor.formatOnSave": true,
   "editor.formatOnSaveMode": "file",
   "cSpell.ignorePaths": [
@@ -23,5 +11,13 @@
     "*/assets/*",
     "package.json"
   ],
-  "cSpell.words": ["badgen"]
+  "cSpell.words": [
+    "badgen"
+  ],
+  "[javascript][typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  }
 }
