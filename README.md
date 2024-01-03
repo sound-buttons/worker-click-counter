@@ -1,7 +1,5 @@
 # Click Counter
 
-<https://view-counter-sb.jim60105.workers.dev>
-
 This tool is used to calculate the total number of button triggers.
 
 A counter implemented using Cloudflare Workers Edge storage solution.
