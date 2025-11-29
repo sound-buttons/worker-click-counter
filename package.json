@@ -12,7 +12,7 @@
     "Aveek Saha <aveek.s98@gmail.com>",
     "陳鈞 <jim60105@gmail.com>"
   ],
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20251128.0",
     "prettier": "^3.7.2",
